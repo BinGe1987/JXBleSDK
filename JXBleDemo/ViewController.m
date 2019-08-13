@@ -8,12 +8,16 @@
 
 #import "ViewController.h"
 #import "JXBleSDK.h"
+#import "UITableView+BleTableView.h"
 
 @interface ViewController ()
 
 @property (nonatomic, strong) BluetoothClient *ble;
 
-@property (weak, nonatomic) IBOutlet UILabel *bleStatus;
+//蓝牙开关状态
+@property (strong, nonatomic) IBOutlet UILabel *bleStatus;
+//蓝牙设备列表
+@property (strong, nonatomic) IBOutlet UITableView *bleTableView;
 
 @end
 
@@ -38,14 +42,16 @@
  */
 - (IBAction)startScan:(id)sender {
     NSLog(@"startScan");
+    __weak typeof(self) weakSelf = self;
     [self.ble scan:[[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3] onStarted:^{
-        
+        NSLog(@"开始搜索");
     } onDeviceFound:^(ScanResultModel *model){
-        
+//        NSLog(@"搜索到设备：%@", model.name);
+        [weakSelf.bleTableView addScanResultModel:model];
     } onStopped:^{
-        
+        NSLog(@"停止搜索");
     } onCanceled:^{
-        
+        NSLog(@"取消搜索");
     }];
      
 }
@@ -55,6 +61,7 @@
  */
 - (IBAction)stopScan:(id)sender {
     NSLog(@"stopScan");
+    [self.ble stop];
 }
 
 /**

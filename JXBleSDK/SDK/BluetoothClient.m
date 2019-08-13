@@ -20,8 +20,8 @@ BabyBluetooth *baby;
         NSLog(@"BluetoothClient create.");
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
-        //设置蓝牙委托
-        [self babyDelegate];
+//        设置蓝牙委托
+//        [self babyDelegate];
 //        baby.scanForPeripherals().begin();
     }
     return self;
@@ -78,7 +78,50 @@ BabyBluetooth *baby;
 }
 
 - (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
+    
+//    baby setb
+    //设置扫描到设备的委托
+    [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
+//        NSLog(@"搜索到了设备:%@",peripheral.name);
+        if (onDeviceFound) {
+            ScanResultModel *model = [[ScanResultModel alloc] init];
+            model.name = peripheral.name;
+            onDeviceFound(model);
+        }
+    }];
+    
+    //过滤器
+    //设置查找设备的过滤器
+    [baby setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
+        //最常用的场景是查找某一个前缀开头的设备 most common usage is discover for peripheral that name has common prefix
+        //if ([peripheralName hasPrefix:@"Pxxxx"] ) {
+        //    return YES;
+        //}
+        //return NO;
+        //设置查找规则是名称大于1 ， the search rule is peripheral.name length > 1
+        if (peripheralName.length >1) {
+            return YES;
+        }
+        return NO;
+    }];
+    
+    [baby setBlockOnCancelScanBlock:^(CBCentralManager *centralManager) {
+        
+        if (onStopped) {
+            onStopped();
+        }
+    }];
+    
+    
+    
     baby.scanForPeripherals().begin().stop(request.duration / 1000.0f);
+    if (onStarted) {
+        onStarted();
+    }
+}
+
+- (void)stop {
+    baby.scanForPeripherals().stop(0);
 }
 
 @end

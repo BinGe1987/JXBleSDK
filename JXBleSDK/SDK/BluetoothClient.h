@@ -50,6 +50,8 @@ typedef void (^BleStateChangeListener)(BOOL isBleOpen);
 
 - (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled;
 
+- (void)stop;
+
 @end
 
 NS_ASSUME_NONNULL_END

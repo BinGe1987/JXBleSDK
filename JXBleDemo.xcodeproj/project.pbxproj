@@ -27,6 +27,7 @@
 		7743491B2302C1850049220A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7743491A2302C1850049220A /* Main.storyboard */; };
 		7743496B2302F4B50049220A /* BTScanRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743496A2302F4B50049220A /* BTScanRequestOptions.m */; };
 		7743496E2303043C0049220A /* ScanResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743496D2303043C0049220A /* ScanResultModel.m */; };
+		77434971230314980049220A /* UITableView+BleTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77434970230314980049220A /* UITableView+BleTableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		7743496A2302F4B50049220A /* BTScanRequestOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTScanRequestOptions.m; sourceTree = "<group>"; };
 		7743496C2303043C0049220A /* ScanResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanResultModel.h; sourceTree = "<group>"; };
 		7743496D2303043C0049220A /* ScanResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanResultModel.m; sourceTree = "<group>"; };
+		7743496F230314980049220A /* UITableView+BleTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableView+BleTableView.h"; sourceTree = "<group>"; };
+		77434970230314980049220A /* UITableView+BleTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableView+BleTableView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				774348D523019EF50049220A /* AppDelegate.m */,
 				774348D723019EF50049220A /* ViewController.h */,
 				774348D823019EF50049220A /* ViewController.m */,
+				7743496F230314980049220A /* UITableView+BleTableView.h */,
+				77434970230314980049220A /* UITableView+BleTableView.m */,
 				7743491A2302C1850049220A /* Main.storyboard */,
 				774348E023019EF70049220A /* Assets.xcassets */,
 				774348E223019EF70049220A /* LaunchScreen.storyboard */,
@@ -242,6 +247,7 @@
 				774349162301A8A80049220A /* BabyBluetooth.m in Sources */,
 				774349102301A8A80049220A /* BabyOptions.m in Sources */,
 				774349172301A8A80049220A /* BabyDefine.m in Sources */,
+				77434971230314980049220A /* UITableView+BleTableView.m in Sources */,
 				7743490F2301A8A80049220A /* BabyToy.m in Sources */,
 				774349122301A8A80049220A /* BabyPeripheralManager.m in Sources */,
 				774348D923019EF50049220A /* ViewController.m in Sources */,
