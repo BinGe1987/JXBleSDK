@@ -9,6 +9,8 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "BTScanRequestOptions.h"
+#import "ScanResultModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,8 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param isBleOpen 参数为蓝牙的开关状态
  */
 typedef void (^BleStateChangeListener)(BOOL isBleOpen);
-
-
 
 @interface BluetoothClient : NSObject
 
@@ -45,13 +45,10 @@ typedef void (^BleStateChangeListener)(BOOL isBleOpen);
 
  @return 打开成功返回YES，打开失败返回NO
  */
-- (BOOL)openBle;
+//- (BOOL)openBle;
 
 
-/**
- 搜索
- */
-//- (void)scan:();
+- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled;
 
 @end
 

@@ -21,6 +21,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.ble = [BluetoothClientManager getClient];
 //    NSLog(@"ViewController start! %@", [self.ble isBleOpen]? @"蓝牙已打开":@"蓝牙已关闭");
     __weak typeof(self) weakSelf = self;
@@ -30,6 +31,15 @@
 }
 - (IBAction)startScan:(id)sender {
     NSLog(@"startScan");
+    [self.ble scan:nil onStarted:^{
+        
+    } onDeviceFound:^(ScanResultModel *model){
+        
+    } onStopped:^{
+        
+    } onCanceled:^{
+        
+    }];
      
 }
 - (IBAction)stopScan:(id)sender {

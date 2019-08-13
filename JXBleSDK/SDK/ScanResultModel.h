@@ -1,5 +1,5 @@
 //
-//  BTScanResponse.h
+//  ScanResultModel.h
 //  JXBleDemo
 //
 //  Created by BinGe on 2019/8/13.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTScanResponse : NSObject
+@interface ScanResultModel : NSObject
 
 @end
 

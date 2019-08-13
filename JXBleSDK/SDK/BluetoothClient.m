@@ -74,4 +74,8 @@ BabyBluetooth *baby;
     return YES;
 }
 
+- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void(^)(void))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
+    
+}
+
 @end

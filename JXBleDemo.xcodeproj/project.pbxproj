@@ -25,7 +25,8 @@
 		774349162301A8A80049220A /* BabyBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743490C2301A8A70049220A /* BabyBluetooth.m */; };
 		774349172301A8A80049220A /* BabyDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743490D2301A8A70049220A /* BabyDefine.m */; };
 		7743491B2302C1850049220A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7743491A2302C1850049220A /* Main.storyboard */; };
-		774349682302F1A20049220A /* BTScanResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349672302F1A20049220A /* BTScanResponse.m */; };
+		7743496B2302F4B50049220A /* BTScanRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743496A2302F4B50049220A /* BTScanRequestOptions.m */; };
+		7743496E2303043C0049220A /* ScanResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743496D2303043C0049220A /* ScanResultModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,8 +64,10 @@
 		7743490D2301A8A70049220A /* BabyDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyDefine.m; sourceTree = "<group>"; };
 		7743490E2301A8A70049220A /* BabyCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCallback.h; sourceTree = "<group>"; };
 		7743491A2302C1850049220A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		774349662302F1A20049220A /* BTScanResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTScanResponse.h; sourceTree = "<group>"; };
-		774349672302F1A20049220A /* BTScanResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTScanResponse.m; sourceTree = "<group>"; };
+		774349692302F4B50049220A /* BTScanRequestOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTScanRequestOptions.h; sourceTree = "<group>"; };
+		7743496A2302F4B50049220A /* BTScanRequestOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTScanRequestOptions.m; sourceTree = "<group>"; };
+		7743496C2303043C0049220A /* ScanResultModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScanResultModel.h; sourceTree = "<group>"; };
+		7743496D2303043C0049220A /* ScanResultModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScanResultModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,13 +127,15 @@
 		774348F52301A1AA0049220A /* SDK */ = {
 			isa = PBXGroup;
 			children = (
+				774348FC2301A8A70049220A /* BabyBluetooth */,
 				774348F82301A1AA0049220A /* BluetoothClientManager.h */,
 				774348F72301A1AA0049220A /* BluetoothClientManager.m */,
 				774348F92301A1AA0049220A /* BluetoothClient.h */,
 				774348F62301A1AA0049220A /* BluetoothClient.m */,
-				774349662302F1A20049220A /* BTScanResponse.h */,
-				774349672302F1A20049220A /* BTScanResponse.m */,
-				774348FC2301A8A70049220A /* BabyBluetooth */,
+				774349692302F4B50049220A /* BTScanRequestOptions.h */,
+				7743496A2302F4B50049220A /* BTScanRequestOptions.m */,
+				7743496C2303043C0049220A /* ScanResultModel.h */,
+				7743496D2303043C0049220A /* ScanResultModel.m */,
 			);
 			path = SDK;
 			sourceTree = "<group>";
@@ -235,12 +240,13 @@
 				774348FB2301A1AA0049220A /* BluetoothClientManager.m in Sources */,
 				774349152301A8A80049220A /* BabyRhythm.m in Sources */,
 				774349162301A8A80049220A /* BabyBluetooth.m in Sources */,
-				774349682302F1A20049220A /* BTScanResponse.m in Sources */,
 				774349102301A8A80049220A /* BabyOptions.m in Sources */,
 				774349172301A8A80049220A /* BabyDefine.m in Sources */,
 				7743490F2301A8A80049220A /* BabyToy.m in Sources */,
 				774349122301A8A80049220A /* BabyPeripheralManager.m in Sources */,
 				774348D923019EF50049220A /* ViewController.m in Sources */,
+				7743496E2303043C0049220A /* ScanResultModel.m in Sources */,
+				7743496B2302F4B50049220A /* BTScanRequestOptions.m in Sources */,
 				774348DF23019EF50049220A /* JXBleDemo.xcdatamodeld in Sources */,
 				774348E723019EF70049220A /* main.m in Sources */,
 				774349142301A8A80049220A /* BabySpeaker.m in Sources */,
