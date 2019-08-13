@@ -8,12 +8,6 @@
 
 #import "BTScanRequestOptions.h"
 
-@interface BTScanRequestOptions(){
-    int duration;
-    int retryTimes;
-}
-@end
-
 @implementation BTScanRequestOptions
 
 
@@ -25,8 +19,8 @@
 -(instancetype)initWithDuration:(int)ms retryTimes:(int)times {
     self = [super init];
     if (self) {
-        duration = ms;
-        retryTimes = times;
+        self.duration = ms;
+        self.retryTimes = times;
     }
     return self;
 }

@@ -29,6 +29,9 @@ BabyBluetooth *baby;
 
 //设置蓝牙委托
 -(void)babyDelegate{
+    
+    
+    
     //设置扫描到设备的委托
     [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         NSLog(@"搜索到了设备:%@",peripheral.name);
@@ -74,8 +77,8 @@ BabyBluetooth *baby;
     return YES;
 }
 
-- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void(^)(void))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
-    
+- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
+    baby.scanForPeripherals().begin().stop(request.duration / 1000.0f);
 }
 
 @end

@@ -22,16 +22,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //初始化蓝牙
     self.ble = [BluetoothClientManager getClient];
-//    NSLog(@"ViewController start! %@", [self.ble isBleOpen]? @"蓝牙已打开":@"蓝牙已关闭");
+    
+    //设置蓝牙开关状态监听器
     __weak typeof(self) weakSelf = self;
     [self.ble setOnBleStateChangeListener:^(BOOL isBleOpen) {
         weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
     }];
 }
+
+
+/**
+ 开始搜索按钮
+ */
 - (IBAction)startScan:(id)sender {
     NSLog(@"startScan");
-    [self.ble scan:nil onStarted:^{
+    [self.ble scan:[[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3] onStarted:^{
         
     } onDeviceFound:^(ScanResultModel *model){
         
@@ -42,9 +49,17 @@
     }];
      
 }
+
+/**
+ 停止搜索按钮
+ */
 - (IBAction)stopScan:(id)sender {
     NSLog(@"stopScan");
 }
+
+/**
+ 断开连接按钮
+ */
 - (IBAction)disconnect:(id)sender {
     NSLog(@"disconnect");
 }

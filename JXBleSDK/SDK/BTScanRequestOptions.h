@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTScanRequestOptions : NSObject
 
+@property (atomic, assign) NSInteger duration;
+@property (atomic, assign) NSInteger retryTimes;
+
 -(instancetype)init;
 
 -(instancetype)initWithDuration:(int)ms retryTimes:(int)times;
