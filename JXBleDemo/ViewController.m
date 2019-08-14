@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "JXBleSDK.h"
-#import "UITableView+BleTableView.h"
+#import "BleModelManager.h"
 
 @interface ViewController ()
 
@@ -18,6 +18,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *bleStatus;
 //蓝牙设备列表
 @property (strong, nonatomic) IBOutlet UITableView *bleTableView;
+//用于管理tableview的数据，将tableView列表代码与viewController的代码分开
+@property (strong, nonatomic) BleModelManager *manager;
+
 
 @end
 
@@ -25,6 +28,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //将tableView交给Manager管理
+    self.manager = [[BleModelManager alloc] initWithTableView:self.bleTableView];
     
     //初始化蓝牙
     self.ble = [BluetoothClientManager getClient];
@@ -42,12 +48,15 @@
  */
 - (IBAction)startScan:(id)sender {
     NSLog(@"startScan");
+    
+    [self.manager cleanModels];
+    
     __weak typeof(self) weakSelf = self;
     [self.ble scan:[[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3] onStarted:^{
         NSLog(@"开始搜索");
     } onDeviceFound:^(ScanResultModel *model){
-//        NSLog(@"搜索到设备：%@", model.name);
-        [weakSelf.bleTableView addScanResultModel:model];
+        NSLog(@"搜索到设备：%@", model.name);
+        [weakSelf.manager addScanResultModel:model];
     } onStopped:^{
         NSLog(@"停止搜索");
     } onCanceled:^{
