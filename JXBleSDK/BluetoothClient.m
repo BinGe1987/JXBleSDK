@@ -8,6 +8,7 @@
 
 #import "BluetoothClient.h"
 #import "BabyBluetooth.h"
+#import "Tools.h"
 
 @implementation BluetoothClient
 
@@ -20,37 +21,8 @@ BabyBluetooth *baby;
         NSLog(@"BluetoothClient create.");
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
-//        设置蓝牙委托
-//        [self babyDelegate];
-//        baby.scanForPeripherals().begin();
     }
     return self;
-}
-
-//设置蓝牙委托
--(void)babyDelegate{
-    
-    
-    
-    //设置扫描到设备的委托
-    [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
-        NSLog(@"搜索到了设备:%@",peripheral.name);
-    }];
-    
-    //过滤器
-    //设置查找设备的过滤器
-    [baby setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
-        //最常用的场景是查找某一个前缀开头的设备 most common usage is discover for peripheral that name has common prefix
-        //if ([peripheralName hasPrefix:@"Pxxxx"] ) {
-        //    return YES;
-        //}
-        //return NO;
-        //设置查找规则是名称大于1 ， the search rule is peripheral.name length > 1
-        if (peripheralName.length >1) {
-            return YES;
-        }
-        return NO;
-    }];
 }
 
 - (void)setOnBleStateChangeListener:(_Nullable BleStateChangeListener) listener {
@@ -61,15 +33,12 @@ BabyBluetooth *baby;
     }];
 }
 
-
 - (BOOL)isBleOpen {
     return baby.centralManager.state == CBManagerStatePoweredOn;
 }
 
 
 - (BOOL)openBle {
-     //设置委托后直接可以使用，无需等待CBCentralManagerStatePoweredOn状态
-//    return baby.scanForPeripherals().begin();
     NSURL *url = [NSURL URLWithString:@"app-Prefs:root=Bluetooth"];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
@@ -79,47 +48,59 @@ BabyBluetooth *baby;
 
 - (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
     
-//    baby setb
-    //设置扫描到设备的委托
-    [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
-//        NSLog(@"搜索到了设备:%@",peripheral.name);
-        if (onDeviceFound) {
-            ScanResultModel *model = [[ScanResultModel alloc] init];
-            model.name = peripheral.name;
-            onDeviceFound(model);
-        }
-        
-//        NSLog(@"advertisementData.kCBAdvDataManufacturerData = %@", advertisementData[@"kCBAdvDataManufacturerData"]);
-        NSLog(@"advertisementData = %@", advertisementData);
-//        if ([advertisementData[@"kCBAdvDataLocalName"] hasPrefix:@"SN"]){
-//            NSLog(@"已搜索到设备");
-//            NSLog(@"peripheral.identifier = %@  peripheral.name = %@", peripheral.identifier, peripheral.name);
-//        }
-    }];
-    
-    //过滤器
-    //设置查找设备的过滤器
     [baby setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
-        //最常用的场景是查找某一个前缀开头的设备 most common usage is discover for peripheral that name has common prefix
-//        if ([peripheralName hasPrefix:@"Pxxxx"] ) {
-//            return YES;
-//        }
-//        return NO;
-        //设置查找规则是名称大于1 ， the search rule is peripheral.name length > 1
-        if (peripheralName.length >1) {
+
+        if (peripheralName.length > 1) {
             return YES;
         }
+        
+//        if ([peripheralName hasPrefix:@"H"]||[peripheralName hasPrefix:@"h"]||
+//            [peripheralName hasPrefix:@"T"]||[peripheralName hasPrefix:@"t"]||
+//            [peripheralName hasPrefix:@"E"]||[peripheralName hasPrefix:@"e"])
+//        {
+//            NSLog(@"搜索到了设备过滤器2:%@",peripheralName);
+//            return YES;
+//        }
         return NO;
     }];
     
-    [baby setBlockOnCancelScanBlock:^(CBCentralManager *centralManager) {
+//    baby setb
+    //设置扫描到设备的委托
+    [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
+        if (onDeviceFound) {
+            ScanResultModel *model = [[ScanResultModel alloc] init];
+            model.name = peripheral.name;
+            NSData *data = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+            if (data) {
+                NSString *kCBAdvDataManufacturerString = [NSString stringWithFormat:@"%@", data];
+                kCBAdvDataManufacturerString = [kCBAdvDataManufacturerString stringByReplacingOccurrencesOfString:@" " withString:@""];
+                if (kCBAdvDataManufacturerString.length > 14 && [kCBAdvDataManufacturerString hasPrefix:@"<"] && [kCBAdvDataManufacturerString hasSuffix:@">"]) {
+                    NSMutableString *macString = [[NSMutableString alloc] init];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(1, 2)] uppercaseString]];
+                    [macString appendString:@":"];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(3, 2)] uppercaseString]];
+                    [macString appendString:@":"];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(5, 2)] uppercaseString]];
+                    [macString appendString:@":"];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(7, 2)] uppercaseString]];
+                    [macString appendString:@":"];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(9, 2)] uppercaseString]];
+                    [macString appendString:@":"];
+                    [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(11, 2)] uppercaseString]];
+                    model.mac = macString;
+                    NSLog(@"mac = %@", model.mac);
+                    onDeviceFound(model);
+                }
+            }
+        }
         
+    }];
+    
+    [baby setBlockOnCancelScanBlock:^(CBCentralManager *centralManager) {
         if (onStopped) {
             onStopped();
         }
     }];
-    
-    
     
     baby.scanForPeripherals().begin().stop(request.duration / 1000.0f);
     if (onStarted) {
