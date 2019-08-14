@@ -8,7 +8,6 @@
 
 #import "BluetoothClient.h"
 #import "BabyBluetooth.h"
-#import "Tools.h"
 
 @implementation BluetoothClient
 

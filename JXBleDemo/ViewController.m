@@ -54,13 +54,16 @@
     __weak typeof(self) weakSelf = self;
     [self.ble scan:[[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3] onStarted:^{
         NSLog(@"开始搜索");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     } onDeviceFound:^(ScanResultModel *model){
         NSLog(@"搜索到设备：%@", model.name);
         [weakSelf.manager addScanResultModel:model];
     } onStopped:^{
         NSLog(@"停止搜索");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     } onCanceled:^{
         NSLog(@"取消搜索");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }];
      
 }

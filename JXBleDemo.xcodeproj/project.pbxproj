@@ -28,7 +28,6 @@
 		7743498E2303C6830049220A /* ScanResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349852303C6830049220A /* ScanResultModel.m */; };
 		7743498F2303C6830049220A /* BluetoothClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349872303C6830049220A /* BluetoothClientManager.m */; };
 		774349902303C6830049220A /* BTScanRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743498C2303C6830049220A /* BTScanRequestOptions.m */; };
-		77486D3D2303E0FA001A3A15 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D3C2303E0FA001A3A15 /* Tools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,8 +71,6 @@
 		7743498A2303C6830049220A /* ScanResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanResultModel.h; sourceTree = "<group>"; };
 		7743498B2303C6830049220A /* BluetoothClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothClientManager.h; sourceTree = "<group>"; };
 		7743498C2303C6830049220A /* BTScanRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTScanRequestOptions.m; sourceTree = "<group>"; };
-		77486D3B2303E0FA001A3A15 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
-		77486D3C2303E0FA001A3A15 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +123,6 @@
 		774348ED23019F140049220A /* JXBleSDK */ = {
 			isa = PBXGroup;
 			children = (
-				77486D3A2303E0D4001A3A15 /* Tools */,
 				774349882303C6830049220A /* JXBleSDK.h */,
 				7743498B2303C6830049220A /* BluetoothClientManager.h */,
 				774349872303C6830049220A /* BluetoothClientManager.m */,
@@ -172,15 +168,6 @@
 				7743490E2301A8A70049220A /* BabyCallback.h */,
 			);
 			path = BabyBluetooth;
-			sourceTree = "<group>";
-		};
-		77486D3A2303E0D4001A3A15 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				77486D3B2303E0FA001A3A15 /* Tools.h */,
-				77486D3C2303E0FA001A3A15 /* Tools.m */,
-			);
-			name = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,7 +249,6 @@
 				774349102301A8A80049220A /* BabyOptions.m in Sources */,
 				774349172301A8A80049220A /* BabyDefine.m in Sources */,
 				7743498D2303C6830049220A /* BluetoothClient.m in Sources */,
-				77486D3D2303E0FA001A3A15 /* Tools.m in Sources */,
 				7743490F2301A8A80049220A /* BabyToy.m in Sources */,
 				774349122301A8A80049220A /* BabyPeripheralManager.m in Sources */,
 				77434974230316850049220A /* BleModelManager.m in Sources */,

@@ -49,6 +49,9 @@
     ScanResultModel *model = self.modelArray[indexPath.row];
     cell.textLabel.text = model.name;
     cell.detailTextLabel.text = model.mac;
+    
+    
+    
     return cell;
 }
 
