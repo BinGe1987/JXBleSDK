@@ -88,16 +88,23 @@ BabyBluetooth *baby;
             model.name = peripheral.name;
             onDeviceFound(model);
         }
+        
+//        NSLog(@"advertisementData.kCBAdvDataManufacturerData = %@", advertisementData[@"kCBAdvDataManufacturerData"]);
+        NSLog(@"advertisementData = %@", advertisementData);
+//        if ([advertisementData[@"kCBAdvDataLocalName"] hasPrefix:@"SN"]){
+//            NSLog(@"已搜索到设备");
+//            NSLog(@"peripheral.identifier = %@  peripheral.name = %@", peripheral.identifier, peripheral.name);
+//        }
     }];
     
     //过滤器
     //设置查找设备的过滤器
     [baby setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
         //最常用的场景是查找某一个前缀开头的设备 most common usage is discover for peripheral that name has common prefix
-        //if ([peripheralName hasPrefix:@"Pxxxx"] ) {
-        //    return YES;
-        //}
-        //return NO;
+//        if ([peripheralName hasPrefix:@"Pxxxx"] ) {
+//            return YES;
+//        }
+//        return NO;
         //设置查找规则是名称大于1 ， the search rule is peripheral.name length > 1
         if (peripheralName.length >1) {
             return YES;

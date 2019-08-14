@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *mac;
 
 //蓝牙设备全部的 SERVICEUUID、CHARACTERISTICUUD
-@property (nonatomic, copy) NSString *service;
+@property (nonatomic, copy) NSMutableArray *service;
 
 //蓝牙设备广播内容(字节流或十六进制字符串)
 @property (nonatomic, copy) NSString *content;
