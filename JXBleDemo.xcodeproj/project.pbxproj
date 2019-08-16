@@ -23,11 +23,11 @@
 		774349162301A8A80049220A /* BabyBluetooth.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743490C2301A8A70049220A /* BabyBluetooth.m */; };
 		774349172301A8A80049220A /* BabyDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743490D2301A8A70049220A /* BabyDefine.m */; };
 		7743491B2302C1850049220A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7743491A2302C1850049220A /* Main.storyboard */; };
-		77434974230316850049220A /* BleModelManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 77434973230316850049220A /* BleModelManager.m */; };
 		7743498D2303C6830049220A /* BluetoothClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349842303C6830049220A /* BluetoothClient.m */; };
 		7743498E2303C6830049220A /* ScanResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349852303C6830049220A /* ScanResultModel.m */; };
 		7743498F2303C6830049220A /* BluetoothClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349872303C6830049220A /* BluetoothClientManager.m */; };
 		774349902303C6830049220A /* BTScanRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743498C2303C6830049220A /* BTScanRequestOptions.m */; };
+		77486D4023054A60001A3A15 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D3F23054A60001A3A15 /* Tools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,8 +60,6 @@
 		7743490D2301A8A70049220A /* BabyDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyDefine.m; sourceTree = "<group>"; };
 		7743490E2301A8A70049220A /* BabyCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCallback.h; sourceTree = "<group>"; };
 		7743491A2302C1850049220A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		77434972230316850049220A /* BleModelManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleModelManager.h; sourceTree = "<group>"; };
-		77434973230316850049220A /* BleModelManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BleModelManager.m; sourceTree = "<group>"; };
 		774349842303C6830049220A /* BluetoothClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothClient.m; sourceTree = "<group>"; };
 		774349852303C6830049220A /* ScanResultModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanResultModel.m; sourceTree = "<group>"; };
 		774349862303C6830049220A /* BTScanRequestOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTScanRequestOptions.h; sourceTree = "<group>"; };
@@ -71,6 +69,8 @@
 		7743498A2303C6830049220A /* ScanResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanResultModel.h; sourceTree = "<group>"; };
 		7743498B2303C6830049220A /* BluetoothClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothClientManager.h; sourceTree = "<group>"; };
 		7743498C2303C6830049220A /* BTScanRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTScanRequestOptions.m; sourceTree = "<group>"; };
+		77486D3E23054A60001A3A15 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
+		77486D3F23054A60001A3A15 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,9 +108,9 @@
 				774348D523019EF50049220A /* AppDelegate.m */,
 				774348D723019EF50049220A /* ViewController.h */,
 				774348D823019EF50049220A /* ViewController.m */,
-				77434972230316850049220A /* BleModelManager.h */,
-				77434973230316850049220A /* BleModelManager.m */,
 				7743491A2302C1850049220A /* Main.storyboard */,
+				77486D3E23054A60001A3A15 /* Tools.h */,
+				77486D3F23054A60001A3A15 /* Tools.m */,
 				774348E023019EF70049220A /* Assets.xcassets */,
 				774348E223019EF70049220A /* LaunchScreen.storyboard */,
 				774348E523019EF70049220A /* Info.plist */,
@@ -243,6 +243,7 @@
 				7743498F2303C6830049220A /* BluetoothClientManager.m in Sources */,
 				774349112301A8A80049220A /* BabyCallback.m in Sources */,
 				7743498E2303C6830049220A /* ScanResultModel.m in Sources */,
+				77486D4023054A60001A3A15 /* Tools.m in Sources */,
 				774349902303C6830049220A /* BTScanRequestOptions.m in Sources */,
 				774349152301A8A80049220A /* BabyRhythm.m in Sources */,
 				774349162301A8A80049220A /* BabyBluetooth.m in Sources */,
@@ -251,7 +252,6 @@
 				7743498D2303C6830049220A /* BluetoothClient.m in Sources */,
 				7743490F2301A8A80049220A /* BabyToy.m in Sources */,
 				774349122301A8A80049220A /* BabyPeripheralManager.m in Sources */,
-				77434974230316850049220A /* BleModelManager.m in Sources */,
 				774348D923019EF50049220A /* ViewController.m in Sources */,
 				774348DF23019EF50049220A /* JXBleDemo.xcdatamodeld in Sources */,
 				774348E723019EF70049220A /* main.m in Sources */,

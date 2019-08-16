@@ -9,6 +9,14 @@
 #import "BluetoothClient.h"
 #import "BabyBluetooth.h"
 
+@interface BluetoothClient()
+
+@property (nonatomic, strong) NSMutableDictionary *peripheralDic;
+
+@property (nonatomic, strong) CBPeripheral *connectedPeripheral;
+
+@end
+
 @implementation BluetoothClient
 
 BabyBluetooth *baby;
@@ -18,6 +26,9 @@ BabyBluetooth *baby;
     self = [super init];
     if (self) {
         NSLog(@"BluetoothClient create.");
+        
+        self.peripheralDic = [NSMutableDictionary new];
+        
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
     }
@@ -45,21 +56,21 @@ BabyBluetooth *baby;
     return YES;
 }
 
-- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
+- (void)startScan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled {
     
     [baby setFilterOnDiscoverPeripherals:^BOOL(NSString *peripheralName, NSDictionary *advertisementData, NSNumber *RSSI) {
 
-        if (peripheralName.length > 1) {
-            return YES;
+        if (peripheralName.length == 0) {
+            return NO;
         }
         
-//        if ([peripheralName hasPrefix:@"H"]||[peripheralName hasPrefix:@"h"]||
-//            [peripheralName hasPrefix:@"T"]||[peripheralName hasPrefix:@"t"]||
-//            [peripheralName hasPrefix:@"E"]||[peripheralName hasPrefix:@"e"])
-//        {
-//            NSLog(@"搜索到了设备过滤器2:%@",peripheralName);
-//            return YES;
-//        }
+        if ([peripheralName hasPrefix:@"H"]||[peripheralName hasPrefix:@"h"]||
+            [peripheralName hasPrefix:@"T"]||[peripheralName hasPrefix:@"t"]||
+            [peripheralName hasPrefix:@"E"]||[peripheralName hasPrefix:@"e"])
+        {
+            NSLog(@"搜索到了设备过滤器2:%@",peripheralName);
+            return YES;
+        }
         return NO;
     }];
     
@@ -67,10 +78,13 @@ BabyBluetooth *baby;
     //设置扫描到设备的委托
     [baby setBlockOnDiscoverToPeripherals:^(CBCentralManager *central, CBPeripheral *peripheral, NSDictionary *advertisementData, NSNumber *RSSI) {
         if (onDeviceFound) {
+            
             ScanResultModel *model = [[ScanResultModel alloc] init];
+            model.peripheral = peripheral;
             model.name = peripheral.name;
             NSData *data = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
             if (data) {
+                NSLog(@"advertisementData = %@", advertisementData);
                 NSString *kCBAdvDataManufacturerString = [NSString stringWithFormat:@"%@", data];
                 kCBAdvDataManufacturerString = [kCBAdvDataManufacturerString stringByReplacingOccurrencesOfString:@" " withString:@""];
                 if (kCBAdvDataManufacturerString.length > 14 && [kCBAdvDataManufacturerString hasPrefix:@"<"] && [kCBAdvDataManufacturerString hasSuffix:@">"]) {
@@ -88,9 +102,11 @@ BabyBluetooth *baby;
                     [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(11, 2)] uppercaseString]];
                     model.mac = macString;
                     NSLog(@"mac = %@", model.mac);
+                    [self.peripheralDic setObject:peripheral forKey:model.mac];
                     onDeviceFound(model);
                 }
             }
+//            onDeviceFound(model);
         }
         
     }];
@@ -107,8 +123,86 @@ BabyBluetooth *baby;
     }
 }
 
-- (void)stop {
-    baby.scanForPeripherals().stop(0);
+- (void)stopScan {
+    [baby cancelScan];
+}
+
+- (void)connect:(ScanResultModel *)model onConnectedStateChange:(void (^)(int state))onConnectedStateChange onServiceDiscover:(void (^)(void))onServiceDiscover onCharacteristicChange:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicChange onCharacteristicWrite:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicWrite onCharacteristicRead:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicRead
+{
+    CBPeripheral *peripheral = model.peripheral;
+    
+    //连接外设
+    baby.having(peripheral).enjoy();
+    
+    //连接回调
+    [baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
+        NSLog(@"连接成功 %@", peripheral.name);
+        self.connectedPeripheral = peripheral;
+        if (onConnectedStateChange) {
+            onConnectedStateChange(1);
+        }
+    }];
+    [baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
+        NSLog(@"断开连接");
+        self.connectedPeripheral = nil;
+        if (onConnectedStateChange) {
+            onConnectedStateChange(0);
+        }
+    }];
+    [baby setBlockOnFailToConnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {
+        NSLog(@"连接失败");
+        self.connectedPeripheral = nil;
+        if (onConnectedStateChange) {
+            onConnectedStateChange(-1);
+        }
+    }];
+    //设置发现设备的Services的委托
+    [baby setBlockOnDiscoverServices:^(CBPeripheral *peripheral, NSError *error) {
+    }];
+    //设置发现设service的Characteristics的委托
+    [baby setBlockOnDiscoverCharacteristics:^(CBPeripheral *peripheral, CBService *service, NSError *error) {
+        if ([[service.UUID UUIDString] isEqualToString:@"FFF0"]) {
+            for (CBCharacteristic *c in service.characteristics) {
+                NSLog(@"搜索服务:%@ 的特征：%@",service.UUID.UUIDString,c.UUID.UUIDString);
+                if ([[c.UUID UUIDString] isEqualToString:@"FFF4"]) {
+                    NSLog(@"设置服务:%@ 的特征：%@ 为可读",service.UUID.UUIDString,c.UUID.UUIDString);
+                    [peripheral setNotifyValue:YES forCharacteristic:c];
+                }
+            }
+        }
+    }];
+    //设置读取characteristics的委托
+//    [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+//        NSLog(@"读取数据 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
+//    }];
+    //写数据成功的block
+    [baby setBlockOnDidWriteValueForCharacteristic:^(CBCharacteristic *characteristic, NSError *error) {
+        NSLog(@"写数据成功:%@", characteristic.value);
+    }];
+}
+
+- (void)disconnect:(ScanResultModel * _Nullable)model {
+    //断开所有peripheral的连
+    [baby cancelAllPeripheralsConnection];
+}
+
+- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value {
+    if (self.connectedPeripheral) {
+        //设置读取characteristics的委托
+        [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+            NSLog(@"读取数据 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
+        }];
+        for (CBService *service in self.connectedPeripheral.services) {
+            if ([service.UUID.UUIDString isEqualToString:serviceUUID]) {
+                for (CBCharacteristic *characteristic in service.characteristics) {
+                    [self.connectedPeripheral writeValue:value forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+                    NSLog(@"%@ 写入数据: %@", self.connectedPeripheral.name, value);
+                    usleep(200 * 1000);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 @end

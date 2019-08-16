@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ScanResultModel : NSObject
 
+//源数据
+@property (nonatomic, assign) id peripheral;
+
+
 //外设名称
 @property (nonatomic, copy) NSString *name;
 

@@ -48,9 +48,46 @@ typedef void (^BleStateChangeListener)(BOOL isBleOpen);
 //- (BOOL)openBle;
 
 
-- (void)scan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled;
+/**
+搜索设备
 
-- (void)stop;
+ @param request 搜索参数（包含时间，重试次数）
+ @param onStarted 开始搜索回调
+ @param onDeviceFound 发现设备回调
+ @param onStopped 停止搜索回调
+ @param onCanceled 取消搜索回调
+ */
+- (void)startScan:(BTScanRequestOptions * _Nullable)request onStarted:(void(^)(void))onStarted onDeviceFound:(void (^)(ScanResultModel *model))onDeviceFound onStopped:(void(^)(void))onStopped onCanceled:(void(^)(void))onCanceled;
+
+/**
+ 停止搜索
+ */
+- (void)stopScan;
+
+
+/**
+ 连接设备
+
+ @param model 连接的设备数据
+ */
+- (void)connect:(ScanResultModel *)model onConnectedStateChange:(void (^)(int state))onConnectedStateChange onServiceDiscover:(void (^)(void))onServiceDiscover onCharacteristicChange:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicChange onCharacteristicWrite:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicWrite onCharacteristicRead:(void (^)(NSString *serviceUUID, NSString *characterUUID, NSData *value))onCharacteristicRead;
+
+/**
+ 断开连接
+ 
+ @param model 断开连接的设备数据
+ */
+- (void)disconnect:(ScanResultModel * _Nullable)model;
+
+
+/**
+ 发送数据
+
+ @param serviceUUID 接收数据的服务
+ @param characteristicUUID 接收数据的服务对应的特征
+ @param value 发送的数据
+ */
+- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value;
 
 @end
 
