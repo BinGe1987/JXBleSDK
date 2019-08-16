@@ -31,6 +31,10 @@ BabyBluetooth *baby;
         
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
+        
+//        NSMutableArray *array = [NSMutableArray new];
+//        [array insertObject:@"" atIndex:0];
+        
     }
     return self;
 }
@@ -190,11 +194,17 @@ BabyBluetooth *baby;
     [baby cancelAllPeripheralsConnection];
 }
 
-- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value {
+- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value block:(void(^)(NSArray *array))block {
     if (self.connectedPeripheral) {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
         //设置读取characteristics的委托
         [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
             NSLog(@"读取数据 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
+            if ([self mergeData:characteristics.value toArray:array]) {
+                if (block) {
+                    block(array);
+                }
+            }
         }];
         for (CBService *service in self.connectedPeripheral.services) {
             if ([service.UUID.UUIDString isEqualToString:serviceUUID]) {
@@ -207,6 +217,33 @@ BabyBluetooth *baby;
             }
         }
     }
+}
+
+- (BOOL)mergeData:(NSData *)buffer toArray:(NSMutableArray *)array{
+    if (!buffer || [buffer length] == 0) {
+        return NO;
+    }
+    Byte *bytes = (Byte *)[buffer bytes];
+    Byte header = bytes[0];
+    if (header != 0x9a) {
+        return NO;
+    }
+    //包长
+    int length = bytes[1];
+    //包编号
+    int number = bytes[2];
+    //源数据字符串
+    NSString *originData = [[[[NSString stringWithFormat:@"%@", buffer] stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""];
+    
+    //分包数
+    int count = length / 15 + 1;
+    [array insertObject:originData atIndex:number - 1];
+    //结束
+    if (number == count) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

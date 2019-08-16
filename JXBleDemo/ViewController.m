@@ -132,7 +132,18 @@
                     NSString *key = [NSString stringWithFormat:@"key_%d",index];
                     NSString *command = value[key];
                     NSData *data = [Tools convertHexStringToData:command];
-                    [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:data];
+                    [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:data block:^(NSArray * _Nonnull array) {
+                        //上传数据到cloud
+                        NSDictionary *data = @{
+                                               @"imei": @"867726036503458",
+                                               @"commandId": @"E6upOProz9iTR2bD7LBfScdaUWe5nZMh",
+                                               @"content": array
+                                               };
+                        [Cloud response:data block:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
+                            
+                        }];
+                         
+                    }];
                 }
                 [ProgressHUB toast:@"发送完成"];
             });
@@ -225,5 +236,6 @@
     }];
     
 }
+
 
 @end

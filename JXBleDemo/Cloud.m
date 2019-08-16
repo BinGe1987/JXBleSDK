@@ -58,4 +58,8 @@ static NSString *token;
     }];
 }
 
++ (void)response:(NSDictionary *)data block:(void (^)(NSDictionary *data, NSError *err))block {
+    
+}
+
 @end

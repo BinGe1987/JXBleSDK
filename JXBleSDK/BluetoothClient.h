@@ -87,7 +87,7 @@ typedef void (^BleStateChangeListener)(BOOL isBleOpen);
  @param characteristicUUID 接收数据的服务对应的特征
  @param value 发送的数据
  */
-- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value;
+- (void)sendWithService:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID value:(NSData *)value block:(void(^)(NSArray *array))block;
 
 @end
 

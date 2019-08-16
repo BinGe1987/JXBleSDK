@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)deviceBinding:(void (^)(NSDictionary *data, NSError *err))block;
 
++ (void)response:(NSDictionary *)data block:(void (^)(NSDictionary *data, NSError *err))block;
+
 @end
 
 NS_ASSUME_NONNULL_END
