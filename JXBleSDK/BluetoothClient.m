@@ -139,7 +139,11 @@ BabyBluetooth *baby;
         NSLog(@"连接成功 %@", peripheral.name);
         self.connectedPeripheral = peripheral;
         if (onConnectedStateChange) {
-            onConnectedStateChange(1);
+            if (self.connectedPeripheral && self.connectedPeripheral.name) {
+                onConnectedStateChange(1);
+            } else {
+                onConnectedStateChange(-1);
+            }
         }
     }];
     [baby setBlockOnDisconnect:^(CBCentralManager *central, CBPeripheral *peripheral, NSError *error) {

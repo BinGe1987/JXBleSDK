@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Cloud : NSObject
 
-+ (void)login:(void (^)(NSString *token, NSError *err))block;
++ (void)login:(void (^)(NSError *err))block;
+
++ (void)deviceBinding:(void (^)(NSDictionary *data, NSError *err))block;
 
 @end
 

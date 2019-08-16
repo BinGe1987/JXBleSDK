@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *api;
 
+@property (nonatomic, copy) NSString *token;
+
 @property (nonatomic, strong) NSDictionary *data;
 
 @property (nonatomic, assign) NSTimeInterval timeout;

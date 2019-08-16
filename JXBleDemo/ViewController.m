@@ -31,8 +31,6 @@
 //当前已连接的设备
 @property (strong, nonatomic) ScanResultModel *connectedModel;
 
-@property (copy, nonatomic) NSString *token;
-
 @end
 
 @implementation ViewController
@@ -55,12 +53,10 @@
     }];
    
     [ProgressHUB loading];
-    [Cloud login:^(NSString * _Nonnull token, NSError * _Nonnull err) {
+    [Cloud login:^(NSError * _Nonnull err) {
         [ProgressHUB dismiss];
         if (err) {
-            
-        } else {
-            self.token = token;
+            [ProgressHUB toast:err.domain];
         }
     }];
     
@@ -122,17 +118,27 @@
 - (IBAction)sendVerifyCode:(id)sender {
     NSLog(@"sendVerifyCode");
     if (self.connectedModel) {
-        NSString *key_1 = @"9A20010F071951C5B313226E01C489E032256A99";
-        NSData *key_1Data = [Tools convertHexStringToData:key_1];
-        [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:key_1Data];
-        
-        NSString *key_2 = @"9A20020F61471BCD515223B5B10426C86D27BEE7";
-        NSData *key_2Data = [Tools convertHexStringToData:key_2];
-        [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:key_2Data];
-        
-        NSString *key_3 = @"9A200302BD9804";
-        NSData *key_3Data = [Tools convertHexStringToData:key_3];
-        [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:key_3Data];
+        [Cloud deviceBinding:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
+            if (err) {
+                [ProgressHUB toast:[NSString stringWithFormat:@"获取配置失败：%@", err.domain]];
+                return;
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                NSArray *values = data[@"sendCommand"];
+                for (int i=0; i < [values count]; i++) {
+                    int index = i + 1;
+                    NSDictionary *value = values[i];
+                    NSString *key = [NSString stringWithFormat:@"key_%d",index];
+                    NSString *command = value[key];
+                    NSData *data = [Tools convertHexStringToData:command];
+                    [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:data];
+                }
+                [ProgressHUB toast:@"发送完成"];
+            });
+        }];
+    } else {
+        [ProgressHUB toast:@"蓝牙未连接"];
     }
 }
 
@@ -219,74 +225,5 @@
     }];
     
 }
-
-- (BOOL)mergeData:(Byte[])buffer sourceData:(NSString *)source{
-    if (!buffer) {
-        return NO;
-    }
-    
-    Byte bufHeader = buffer[0];
-    if (bufHeader != 0x9A) {
-        return NO;
-    }
-    
-    return NO;
-}
-
-//-(BOOL) mergeReceiveData2(Byte[] buffer) {
-//    if (nil == buffer) return NO;
-//
-//    byte bufHeader = buffer[0];
-//    if (bufHeader != (byte) 0x9A) { //若不是0x9A开头，则取消
-//        return false;
-//    }
-//    byte bufLength = buffer[1];
-//    //包编号
-//    byte bufNumber = buffer[2];
-//    //有效数据长度 如果是E / 1开头表示蓝牙协议
-//    String originData = Char2Hex(buffer);
-//    String commandId = originData.substring(6, 7);
-//    String dataLenStr = originData.substring(7, 8);
-//    byte dataLength = (byte) 0x01;
-//    if (commandId.equalsIgnoreCase("E")
-//        || commandId.equalsIgnoreCase("1")) {//蓝牙协议
-//        dataLength = LockCommand.hexStringToBytes(dataLenStr)[0];
-//    } else {
-//        dataLength = LockCommand.hexStringToBytes(dataLenStr)[0];//buffer[3];
-//    }
-//    //数据错误，返回
-//    if (byteToInt(dataLength) < 1 || byteToInt(dataLength) > 16) {
-//        isFinishReceiveState = true;
-//        return false;
-//    }
-//    if (bufNumber == (byte) 0x01) { //如果是第一包，则把之前的缓存数据清空
-//        recDataList.clear();
-//    }
-//    int listIndex = byteToInt(bufNumber) - 1;
-//    if (recDataList.size() < listIndex) { //判断当清楚数据时，突然有上一包的数据出现
-//        Log.d("vincent", "MISS RECEIVE DATA===" + LockCommand.getInstance().Char2Hex(buffer));
-//        isFinishReceiveState = true;
-//        return false;
-//    }
-//    //把每小包加入到列表中
-//    recDataList.add(listIndex, buffer);
-//
-//    //判断数据总长度 如果超过15个字节，则有分包，继续监听数据
-//    int dataTotalLength = buffer[1] & 0xFF;
-//    //分包数
-//    double split_length = Double.parseDouble(15 + "");
-//    int splitCount = (int) Math.ceil(dataTotalLength / split_length);
-//    if (dataTotalLength > 15 && bufNumber < splitCount) {
-//        return true;
-//    }
-//
-//    if (mBluetoothCallbackListener != null) {
-//        ReceiverModel model = new ReceiverModel();
-//        model.setOriginRecData(recDataList);
-//        mBluetoothCallbackListener.ReceiverDevicesData(model);
-//    }
-//    recDataList.clear();
-//    return false;
-//}
 
 @end

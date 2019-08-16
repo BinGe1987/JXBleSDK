@@ -76,6 +76,9 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setTimeoutInterval:httpRequest.timeout];
     [request setHTTPMethod:@"POST"];
+    if ([httpRequest.token length] > 0) {
+        [request setValue:httpRequest.token forHTTPHeaderField:@"ACCESSTOKEN"];
+    }
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSData *postDatas = [NSJSONSerialization dataWithJSONObject:httpRequest.data options:NSJSONWritingPrettyPrinted error:nil];;
     [request setHTTPBody:postDatas];

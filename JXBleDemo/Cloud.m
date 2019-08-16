@@ -11,16 +11,46 @@
 
 @implementation Cloud
 
-+ (void)login:(void (^)(NSString *token, NSError *err))block {
+static NSString *token;
+
++ (void)login:(void (^)(NSError *err))block {
     HttpRequest *request = [[HttpRequest alloc] initWithHost:@"http://dev.techphant.net/webApi/v2.0.0" api:@"/application/login"];
     request.data = @{@"appId":@"tp_ZP6MO8x3hjBJ",@"appSecret":@"CrsQ0LXNlD9SBxP4iGpzgvHanY7OmwUj"};
+    [Http post:request reponse:^(HttpResponse * _Nonnull response) {
+        if (response.error) {
+            block(response.error);
+        } else {
+            int errCode = [response.data[@"errCode"] intValue];;
+            if (errCode == 0) {
+                token = response.data[@"accessToken"];
+                block( nil);
+            } else {
+                block([NSError errorWithDomain:response.data[@"errMsg"] code:errCode userInfo:nil]);
+            }
+        }
+    }];
+}
+
++ (void)deviceBinding:(void (^)(NSDictionary *data, NSError *err))block {
+    HttpRequest *request = [[HttpRequest alloc] initWithHost:@"http://dev.techphant.net/webApi/v2.0.0" api:@"/deviceBinding/867726036503458"];
+    request.token = token;
+    request.data = @{
+                     @"actionCode":[NSNumber numberWithInt:2091],
+                     @"type":[NSNumber numberWithInt:2],
+                     @"content":
+                            @{
+                             @"verifyCode": @"MIBgVL",
+                             @"appId": @"1234567890",
+                             @"value": @"123456"
+                             }
+                     };
     [Http post:request reponse:^(HttpResponse * _Nonnull response) {
         if (response.error) {
             block(nil, response.error);
         } else {
             int errCode = [response.data[@"errCode"] intValue];;
             if (errCode == 0) {
-                block(response.data[@"accessToken"], nil);
+                block(response.data[@"data"], nil);
             } else {
                 block(nil, [NSError errorWithDomain:response.data[@"errMsg"] code:errCode userInfo:nil]);
             }
