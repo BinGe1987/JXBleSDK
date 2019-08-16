@@ -9,6 +9,9 @@
 #import "ViewController.h"
 #import "JXBleSDK.h"
 #import "Tools.h"
+#import "ProgressHUB+Utils.h"
+#import "Cloud.h"
+
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -27,6 +30,8 @@
 @property (strong, nonatomic) ScanResultModel *currentModel;
 //当前已连接的设备
 @property (strong, nonatomic) ScanResultModel *connectedModel;
+
+@property (copy, nonatomic) NSString *token;
 
 @end
 
@@ -48,6 +53,17 @@
     [self.ble setOnBleStateChangeListener:^(BOOL isBleOpen) {
         weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
     }];
+   
+    [ProgressHUB loading];
+    [Cloud login:^(NSString * _Nonnull token, NSError * _Nonnull err) {
+        [ProgressHUB dismiss];
+        if (err) {
+            
+        } else {
+            self.token = token;
+        }
+    }];
+    
 }
 
 

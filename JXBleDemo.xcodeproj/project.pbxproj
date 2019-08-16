@@ -28,6 +28,14 @@
 		7743498F2303C6830049220A /* BluetoothClientManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 774349872303C6830049220A /* BluetoothClientManager.m */; };
 		774349902303C6830049220A /* BTScanRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7743498C2303C6830049220A /* BTScanRequestOptions.m */; };
 		77486D4023054A60001A3A15 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D3F23054A60001A3A15 /* Tools.m */; };
+		77486D6D23064DE3001A3A15 /* HttpResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D6623064DE3001A3A15 /* HttpResponse.m */; };
+		77486D6E23064DE3001A3A15 /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D6723064DE3001A3A15 /* HttpRequest.m */; };
+		77486D6F23064DE3001A3A15 /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D6A23064DE3001A3A15 /* Http.m */; };
+		77486D8123065150001A3A15 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D7B23065150001A3A15 /* MBProgressHUD.m */; };
+		77486D8823068ED9001A3A15 /* ProgressHUB+Tips.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D8223068ED9001A3A15 /* ProgressHUB+Tips.m */; };
+		77486D8923068ED9001A3A15 /* ProgressHUB+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D8323068ED9001A3A15 /* ProgressHUB+Utils.m */; };
+		77486D8A23068ED9001A3A15 /* ProgressHUB.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D8523068ED9001A3A15 /* ProgressHUB.m */; };
+		77486D8D23069398001A3A15 /* Cloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 77486D8C23069398001A3A15 /* Cloud.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +79,22 @@
 		7743498C2303C6830049220A /* BTScanRequestOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTScanRequestOptions.m; sourceTree = "<group>"; };
 		77486D3E23054A60001A3A15 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		77486D3F23054A60001A3A15 /* Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
+		77486D6523064DE3001A3A15 /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Http.h; sourceTree = "<group>"; };
+		77486D6623064DE3001A3A15 /* HttpResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpResponse.m; sourceTree = "<group>"; };
+		77486D6723064DE3001A3A15 /* HttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpRequest.m; sourceTree = "<group>"; };
+		77486D6923064DE3001A3A15 /* HttpResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpResponse.h; sourceTree = "<group>"; };
+		77486D6A23064DE3001A3A15 /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Http.m; sourceTree = "<group>"; };
+		77486D6B23064DE3001A3A15 /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
+		77486D7B23065150001A3A15 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
+		77486D7C23065150001A3A15 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
+		77486D8223068ED9001A3A15 /* ProgressHUB+Tips.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ProgressHUB+Tips.m"; path = "JXBleDemo/Progress/ProgressHUB+Tips.m"; sourceTree = SOURCE_ROOT; };
+		77486D8323068ED9001A3A15 /* ProgressHUB+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ProgressHUB+Utils.m"; path = "JXBleDemo/Progress/ProgressHUB+Utils.m"; sourceTree = SOURCE_ROOT; };
+		77486D8423068ED9001A3A15 /* ProgressHUB+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ProgressHUB+Utils.h"; path = "JXBleDemo/Progress/ProgressHUB+Utils.h"; sourceTree = SOURCE_ROOT; };
+		77486D8523068ED9001A3A15 /* ProgressHUB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressHUB.m; path = JXBleDemo/Progress/ProgressHUB.m; sourceTree = SOURCE_ROOT; };
+		77486D8623068ED9001A3A15 /* ProgressHUB+Tips.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ProgressHUB+Tips.h"; path = "JXBleDemo/Progress/ProgressHUB+Tips.h"; sourceTree = SOURCE_ROOT; };
+		77486D8723068ED9001A3A15 /* ProgressHUB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressHUB.h; path = JXBleDemo/Progress/ProgressHUB.h; sourceTree = SOURCE_ROOT; };
+		77486D8B23069398001A3A15 /* Cloud.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cloud.h; sourceTree = "<group>"; };
+		77486D8C23069398001A3A15 /* Cloud.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cloud.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,11 +128,15 @@
 		774348D323019EF50049220A /* JXBleDemo */ = {
 			isa = PBXGroup;
 			children = (
+				77486D7423065150001A3A15 /* Progress */,
+				77486D6323064DE3001A3A15 /* Http */,
 				774348D423019EF50049220A /* AppDelegate.h */,
 				774348D523019EF50049220A /* AppDelegate.m */,
 				774348D723019EF50049220A /* ViewController.h */,
 				774348D823019EF50049220A /* ViewController.m */,
 				7743491A2302C1850049220A /* Main.storyboard */,
+				77486D8B23069398001A3A15 /* Cloud.h */,
+				77486D8C23069398001A3A15 /* Cloud.m */,
 				77486D3E23054A60001A3A15 /* Tools.h */,
 				77486D3F23054A60001A3A15 /* Tools.m */,
 				774348E023019EF70049220A /* Assets.xcassets */,
@@ -168,6 +196,34 @@
 				7743490E2301A8A70049220A /* BabyCallback.h */,
 			);
 			path = BabyBluetooth;
+			sourceTree = "<group>";
+		};
+		77486D6323064DE3001A3A15 /* Http */ = {
+			isa = PBXGroup;
+			children = (
+				77486D6523064DE3001A3A15 /* Http.h */,
+				77486D6A23064DE3001A3A15 /* Http.m */,
+				77486D6923064DE3001A3A15 /* HttpResponse.h */,
+				77486D6623064DE3001A3A15 /* HttpResponse.m */,
+				77486D6723064DE3001A3A15 /* HttpRequest.m */,
+				77486D6B23064DE3001A3A15 /* HttpRequest.h */,
+			);
+			path = Http;
+			sourceTree = "<group>";
+		};
+		77486D7423065150001A3A15 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				77486D8623068ED9001A3A15 /* ProgressHUB+Tips.h */,
+				77486D8223068ED9001A3A15 /* ProgressHUB+Tips.m */,
+				77486D8423068ED9001A3A15 /* ProgressHUB+Utils.h */,
+				77486D8323068ED9001A3A15 /* ProgressHUB+Utils.m */,
+				77486D7C23065150001A3A15 /* MBProgressHUD.h */,
+				77486D7B23065150001A3A15 /* MBProgressHUD.m */,
+				77486D8723068ED9001A3A15 /* ProgressHUB.h */,
+				77486D8523068ED9001A3A15 /* ProgressHUB.m */,
+			);
+			path = Progress;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,21 +297,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				7743498F2303C6830049220A /* BluetoothClientManager.m in Sources */,
+				77486D6F23064DE3001A3A15 /* Http.m in Sources */,
 				774349112301A8A80049220A /* BabyCallback.m in Sources */,
 				7743498E2303C6830049220A /* ScanResultModel.m in Sources */,
 				77486D4023054A60001A3A15 /* Tools.m in Sources */,
+				77486D6E23064DE3001A3A15 /* HttpRequest.m in Sources */,
 				774349902303C6830049220A /* BTScanRequestOptions.m in Sources */,
+				77486D8823068ED9001A3A15 /* ProgressHUB+Tips.m in Sources */,
+				77486D8123065150001A3A15 /* MBProgressHUD.m in Sources */,
 				774349152301A8A80049220A /* BabyRhythm.m in Sources */,
 				774349162301A8A80049220A /* BabyBluetooth.m in Sources */,
 				774349102301A8A80049220A /* BabyOptions.m in Sources */,
 				774349172301A8A80049220A /* BabyDefine.m in Sources */,
+				77486D8A23068ED9001A3A15 /* ProgressHUB.m in Sources */,
 				7743498D2303C6830049220A /* BluetoothClient.m in Sources */,
+				77486D8923068ED9001A3A15 /* ProgressHUB+Utils.m in Sources */,
 				7743490F2301A8A80049220A /* BabyToy.m in Sources */,
+				77486D6D23064DE3001A3A15 /* HttpResponse.m in Sources */,
 				774349122301A8A80049220A /* BabyPeripheralManager.m in Sources */,
 				774348D923019EF50049220A /* ViewController.m in Sources */,
 				774348DF23019EF50049220A /* JXBleDemo.xcdatamodeld in Sources */,
 				774348E723019EF70049220A /* main.m in Sources */,
 				774349142301A8A80049220A /* BabySpeaker.m in Sources */,
+				77486D8D23069398001A3A15 /* Cloud.m in Sources */,
 				774349132301A8A80049220A /* BabyCentralManager.m in Sources */,
 				774348D623019EF50049220A /* AppDelegate.m in Sources */,
 			);
