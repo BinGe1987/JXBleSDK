@@ -84,6 +84,7 @@ BabyBluetooth *baby;
             ScanResultModel *model = [[ScanResultModel alloc] init];
             model.peripheral = peripheral;
             model.name = peripheral.name;
+            model.rssi = [RSSI integerValue];
             NSData *data = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
             if (data) {
                 NSLog(@"advertisementData = %@", advertisementData);
@@ -102,9 +103,9 @@ BabyBluetooth *baby;
                     [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(9, 2)] uppercaseString]];
                     [macString appendString:@":"];
                     [macString appendString:[[kCBAdvDataManufacturerString substringWithRange:NSMakeRange(11, 2)] uppercaseString]];
-                    model.mac = macString;
-                    NSLog(@"mac = %@", model.mac);
-                    [self.peripheralDic setObject:peripheral forKey:model.mac];
+                    model.address = macString;
+                    NSLog(@"mac = %@", model.address);
+                    [self.peripheralDic setObject:peripheral forKey:model.address];
                     onDeviceFound(model);
                 }
             }

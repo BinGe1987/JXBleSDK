@@ -78,11 +78,13 @@
         NSLog(@"开始搜索");
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     } onDeviceFound:^(ScanResultModel *model) {
-        ScanResultModel *oldModel = [weakSelf.modelDic objectForKey:model.mac];
+        ScanResultModel *oldModel = [weakSelf.modelDic objectForKey:model.address];
         if (oldModel) {
             oldModel.peripheral = model.peripheral;
+            oldModel.rssi = model.rssi;
+             [weakSelf.bleTableView reloadData];
         } else {
-            [weakSelf.modelDic setObject:model forKey:model.mac];
+            [weakSelf.modelDic setObject:model forKey:model.address];
             [weakSelf.modelArray addObject:model];
             [weakSelf.bleTableView reloadData];
         }
@@ -165,7 +167,7 @@
     }
     ScanResultModel *model = self.modelArray[indexPath.row];
     cell.textLabel.text = model.name;
-    cell.detailTextLabel.text = model.mac;
+    cell.detailTextLabel.text =[NSString stringWithFormat:@"%@ (%lddbm)",model.address, model.rssi] ;
     
     //添加loading
     UIActivityIndicatorView *activityIndicator = [cell.contentView viewWithTag:1];

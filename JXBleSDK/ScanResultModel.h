@@ -15,18 +15,29 @@ NS_ASSUME_NONNULL_BEGIN
 //源数据
 @property (nonatomic, assign) id peripheral;
 
-
 //外设名称
 @property (nonatomic, copy) NSString *name;
 
 //蓝牙地址
-@property (nonatomic, copy) NSString *mac;
+@property (nonatomic, copy) NSString *address;
 
-//蓝牙设备全部的 SERVICEUUID、CHARACTERISTICUUD
-@property (nonatomic, copy) NSMutableArray *service;
+//蓝牙密钥ID
+@property (nonatomic, copy) NSString *btSecretID;
 
-//蓝牙设备广播内容(字节流或十六进制字符串)
-@property (nonatomic, copy) NSString *content;
+//mcu版本号
+@property (nonatomic, copy) NSString *mcuVersionCode;
+
+//信号量
+@property (nonatomic, assign) NSInteger rssi;
+
+//是否绑定标志位
+@property (nonatomic, assign) NSInteger bindingStatus;
+
+//广播内容
+@property (nonatomic) Byte* scanRecord;
+
+
+
 
 @end
 
