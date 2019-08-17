@@ -30,8 +30,8 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:TOP_WINDOW animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.label.text = title;
-        CGFloat offsetTop = [UIScreen mainScreen].bounds.size.height * 0.7;
-        hud.offset = CGPointMake(0.f, offsetTop);
+        CGFloat offsetTop = [UIScreen mainScreen].bounds.size.height * 0.5;
+//        hud.offset = CGPointMake(0.f, offsetTop);
         hud.removeFromSuperViewOnHide = YES;
         [hud hideAnimated:YES afterDelay:2.0];
     }

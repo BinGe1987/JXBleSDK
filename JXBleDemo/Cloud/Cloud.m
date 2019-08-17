@@ -13,6 +13,10 @@
 
 static NSString *token;
 
++ (BOOL)isLogin {
+    return token;
+}
+
 + (void)login:(void (^)(NSError *err))block {
     HttpRequest *request = [[HttpRequest alloc] initWithHost:@"http://dev.techphant.net/webApi/v2.0.0" api:@"/application/login"];
     request.data = @{@"appId":@"tp_ZP6MO8x3hjBJ",@"appSecret":@"CrsQ0LXNlD9SBxP4iGpzgvHanY7OmwUj"};
@@ -59,7 +63,21 @@ static NSString *token;
 }
 
 + (void)response:(NSDictionary *)data block:(void (^)(NSDictionary *data, NSError *err))block {
-    
+    HttpRequest *request = [[HttpRequest alloc] initWithHost:@"http://dev.techphant.net/webApi/v2.0.0" api:@"/bt/response/EE987AE8FE53"];
+    request.token = token;
+    request.data = data;
+    [Http post:request reponse:^(HttpResponse * _Nonnull response) {
+        if (response.error) {
+            block(nil, response.error);
+        } else {
+            int errCode = [response.data[@"errCode"] intValue];;
+            if (errCode == 0) {
+                block(response.data[@"data"], nil);
+            } else {
+                block(nil, [NSError errorWithDomain:response.data[@"errMsg"] code:errCode userInfo:nil]);
+            }
+        }
+    }];
 }
 
 @end

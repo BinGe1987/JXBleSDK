@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) CBPeripheral *connectedPeripheral;
 
+@property (nonatomic, assign) id readValueBlock;
+
 @end
 
 @implementation BluetoothClient
@@ -26,15 +28,11 @@ BabyBluetooth *baby;
     self = [super init];
     if (self) {
         NSLog(@"BluetoothClient create.");
-        
         self.peripheralDic = [NSMutableDictionary new];
         
         //初始化BabyBluetooth 蓝牙库
         baby = [BabyBluetooth shareBabyBluetooth];
-        
-//        NSMutableArray *array = [NSMutableArray new];
-//        [array insertObject:@"" atIndex:0];
-        
+
     }
     return self;
 }
@@ -121,7 +119,7 @@ BabyBluetooth *baby;
         }
     }];
     
-    baby.scanForPeripherals().begin().stop(request.duration / 1000.0f);
+    baby.scanForPeripherals().begin();
     if (onStarted) {
         onStarted();
     }
@@ -137,13 +135,14 @@ BabyBluetooth *baby;
     
     //连接外设
     baby.having(peripheral).enjoy();
+//    [baby AutoReconnect:peripheral];
     
     //连接回调
     [baby setBlockOnConnected:^(CBCentralManager *central, CBPeripheral *peripheral) {
         NSLog(@"连接成功 %@", peripheral.name);
         self.connectedPeripheral = peripheral;
         if (onConnectedStateChange) {
-            if (self.connectedPeripheral && self.connectedPeripheral.name) {
+            if (self.connectedPeripheral && self.connectedPeripheral == model.peripheral) {
                 onConnectedStateChange(1);
             } else {
                 onConnectedStateChange(-1);
@@ -180,9 +179,9 @@ BabyBluetooth *baby;
         }
     }];
     //设置读取characteristics的委托
-//    [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-//        NSLog(@"读取数据 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
-//    }];
+    [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
+        NSLog(@"读取数据1 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
+    }];
     //写数据成功的block
     [baby setBlockOnDidWriteValueForCharacteristic:^(CBCharacteristic *characteristic, NSError *error) {
         NSLog(@"写数据成功:%@", characteristic.value);
@@ -199,7 +198,7 @@ BabyBluetooth *baby;
         NSMutableArray *array = [[NSMutableArray alloc] init];
         //设置读取characteristics的委托
         [baby setBlockOnReadValueForCharacteristic:^(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error) {
-            NSLog(@"读取数据 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
+            NSLog(@"读取数据2 UUID:%@ value is:%@",characteristics.UUID.UUIDString,characteristics.value);
             if ([self mergeData:characteristics.value toArray:array]) {
                 if (block) {
                     block(array);
@@ -232,6 +231,9 @@ BabyBluetooth *baby;
     int length = bytes[1];
     //包编号
     int number = bytes[2];
+    if (number == 1) {
+        [array removeAllObjects];
+    }
     //源数据字符串
     NSString *originData = [[[[NSString stringWithFormat:@"%@", buffer] stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""];
     

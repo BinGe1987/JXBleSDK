@@ -10,25 +10,6 @@
 
 @implementation Tools
 
-+ (Byte *)hexStringToBytes:(NSString *)hexString {
-//    if (hexString.length > 0) {
-//        if (hexString.length == 1) {
-//            hexString = [NSString stringWithFormat:@"0%@", hexString];
-//        }
-//
-//        hexString = [hexString uppercaseString];
-//        NSInteger size = hexString.length / 2;
-//        Byte *data = (Byte *)malloc(size);
-//        const char *a =[hexString UTF8String];
-//        for (int i = 0; i < size; i++) {
-//
-//        }
-//    }
-    NSData *data = [Tools convertHexStringToData:hexString];
-    return nil;
-}
-
-
 + (NSData *)convertHexStringToData:(NSString *)hexString
 {
     if (!hexString || [hexString length] == 0) {

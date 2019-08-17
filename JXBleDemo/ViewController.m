@@ -11,6 +11,7 @@
 #import "Tools.h"
 #import "ProgressHUB+Utils.h"
 #import "Cloud.h"
+#import "LoginViewController.h"
 
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -26,7 +27,7 @@
 //tableView 数据源
 @property (strong, nonatomic) NSMutableArray *modelArray;
 @property (strong, nonatomic) NSMutableDictionary *modelDic;
-//当前选中的设备
+//当前列表中选中的设备
 @property (strong, nonatomic) ScanResultModel *currentModel;
 //当前已连接的设备
 @property (strong, nonatomic) ScanResultModel *connectedModel;
@@ -52,13 +53,12 @@
         weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
     }];
    
-    [ProgressHUB loading];
-    [Cloud login:^(NSError * _Nonnull err) {
-        [ProgressHUB dismiss];
-        if (err) {
-            [ProgressHUB toast:err.domain];
-        }
-    }];
+    if (![Cloud isLogin]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            LoginViewController *loginVC = [[LoginViewController alloc] init];
+            [self presentViewController:loginVC animated:NO completion:nil];
+        });
+    }
     
 }
 
@@ -70,6 +70,7 @@
     NSLog(@"startScan");
     
     [self.modelArray removeAllObjects];
+    [self.modelDic removeAllObjects];
     [self.bleTableView reloadData];
     
     __weak typeof(self) weakSelf = self;
@@ -123,6 +124,7 @@
                 [ProgressHUB toast:[NSString stringWithFormat:@"获取配置失败：%@", err.domain]];
                 return;
             }
+            NSString *commandId = data[@"commandId"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 NSArray *values = data[@"sendCommand"];
@@ -136,16 +138,15 @@
                         //上传数据到cloud
                         NSDictionary *data = @{
                                                @"imei": @"867726036503458",
-                                               @"commandId": @"E6upOProz9iTR2bD7LBfScdaUWe5nZMh",
+                                               @"commandId": commandId,
                                                @"content": array
                                                };
                         [Cloud response:data block:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
-                            
+                            [ProgressHUB toast:@"发送完成"];
                         }];
                          
                     }];
                 }
-                [ProgressHUB toast:@"发送完成"];
             });
         }];
     } else {
@@ -209,7 +210,7 @@
             case 0://断开连接
                 weakSelf.connectedModel = nil;
                 weakSelf.connectedLabel.text = [NSString stringWithFormat:@"断开连接"];
-                break;
+                return;
             case 1://连接成功
                 weakSelf.connectedModel = weakSelf.currentModel;
                 weakSelf.connectedLabel.text = [NSString stringWithFormat:@"连接成功：%@", weakSelf.currentModel.name];

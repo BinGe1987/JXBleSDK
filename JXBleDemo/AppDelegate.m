@@ -2,12 +2,11 @@
 //  AppDelegate.m
 //  JXBleDemo
 //
-//  Created by BinGe on 2019/8/12.
-//  Copyright © 2019 JX. All rights reserved.
+//  Created by BinGe on 2019/8/17.
+//  Copyright © 2019 LI. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
 
 @interface AppDelegate ()
 
