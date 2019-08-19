@@ -6,7 +6,7 @@
 //  Copyright © 2019 JX. All rights reserved.
 //
 
-#import <TechphantBleLibrary/TechphantBleLibrary.h>
+#import "TechphantBleLibrary.h"
 #import "ViewController.h"
 #import "Tools.h"
 #import "ProgressHUB+Utils.h"
@@ -31,6 +31,10 @@
 @property (strong, nonatomic) ScanResultModel *currentModel;
 //当前已连接的设备
 @property (strong, nonatomic) ScanResultModel *connectedModel;
+//
+@property (assign, nonatomic) BOOL conn;
+
+@property (copy, nonatomic) NSString *commandId;
 
 @end
 
@@ -43,15 +47,6 @@
     self.bleTableView.delegate = self;
     self.modelArray = [NSMutableArray new];
     self.modelDic = [NSMutableDictionary new];
-    
-    //初始化蓝牙
-    self.ble = [BluetoothClientManager getClient];
-    
-    //设置蓝牙开关状态监听器
-    __weak typeof(self) weakSelf = self;
-    [self.ble setOnBleStateChangeListener:^(BOOL isBleOpen) {
-        weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
-    }];
    
     if (![Cloud isLogin]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -60,6 +55,16 @@
         });
     }
     
+    if (![TechphantBleUtils isBluetoothEnable]) {
+        //IOS蓝牙无法用代码打开，可以在此处提醒用户手动打开蓝牙开头
+    }
+    
+    //设置蓝牙开关状态监听器
+    __weak typeof(self) weakSelf = self;
+    self.ble = [BluetoothClientManager getClient];
+    [self.ble setOnBleStateChangeListener:^(BOOL isBleOpen) {
+        weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
+    }];
 }
 
 
@@ -74,7 +79,8 @@
     [self.bleTableView reloadData];
     
     __weak typeof(self) weakSelf = self;
-    [self.ble startScan:[[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3] onStarted:^{
+    BTScanRequestOptions *options = [[BTScanRequestOptions alloc] initWithDuration:5000 retryTimes:3];
+    [[BluetoothClientManager getClient] startScan:options onStarted:^{
         NSLog(@"开始搜索");
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     } onDeviceFound:^(ScanResultModel *model) {
@@ -111,7 +117,7 @@
  */
 - (IBAction)disconnect:(id)sender {
     NSLog(@"disconnect");
-    [self.ble disconnect:nil];
+    [self.ble disconnect:self.connectedModel.address];
 }
 
 
@@ -126,29 +132,32 @@
                 [ProgressHUB toast:[NSString stringWithFormat:@"获取配置失败：%@", err.domain]];
                 return;
             }
-            NSString *commandId = data[@"commandId"];
+            self.commandId = data[@"commandId"];
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 NSArray *values = data[@"sendCommand"];
+                NSMutableArray *commands = [NSMutableArray new];
                 for (int i=0; i < [values count]; i++) {
                     int index = i + 1;
                     NSDictionary *value = values[i];
                     NSString *key = [NSString stringWithFormat:@"key_%d",index];
                     NSString *command = value[key];
-                    NSData *data = [Tools convertHexStringToData:command];
-                    [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:data block:^(NSArray * _Nonnull array) {
-                        //上传数据到cloud
-                        NSDictionary *data = @{
-                                               @"imei": @"867726036503458",
-                                               @"commandId": commandId,
-                                               @"content": array
-                                               };
-                        [Cloud response:data block:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
-                            [ProgressHUB toast:@"发送完成"];
-                        }];
-                         
-                    }];
+//                    NSData *data = [Tools convertHexStringToData:command];
+//                    [self.ble sendWithService:@"FFF0" characteristic:@"FFF6" value:data block:^(NSArray * _Nonnull array) {
+//                        //上传数据到cloud
+//                        NSDictionary *data = @{
+//                                               @"imei": @"867726036503458",
+//                                               @"commandId": commandId,
+//                                               @"content": array
+//                                               };
+//                        [Cloud response:data block:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
+//                            [ProgressHUB toast:@"发送完成"];
+//                        }];
+                        
+//                    }];
+                    [commands addObject:command];
                 }
+                [[BluetoothClientManager getClient] send:self.connectedModel.address command:commands];
             });
         }];
     } else {
@@ -179,7 +188,7 @@
         activityIndicator.tag = 1;
         activityIndicator.hidden = YES;
     }
-    activityIndicator.hidden = !(self.currentModel && (model == self.currentModel));
+    activityIndicator.hidden = !self.conn;
     activityIndicator.hidden ?  [activityIndicator stopAnimating] : [activityIndicator startAnimating];
 
     return cell;
@@ -194,9 +203,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     //如果当前正在连接设备，直接返回
-    if(self.currentModel) {
+    if(self.conn) {
         return;
     }
+    self.conn = YES;
     self.currentModel =  self.modelArray[indexPath.row];
     [tableView beginUpdates];
     [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
@@ -206,38 +216,38 @@
     self.connectedLabel.text = [NSString stringWithFormat:@"正在连接：%@", self.currentModel.name];
     
     __weak typeof(self) weakSelf = self;
-    [self.ble connect:self.currentModel onConnectedStateChange:^(int state) {
+    BTConnectOptions *options = [[BTConnectOptions alloc] initWithConnectRetry:3 connectTimeout:5000];
+    [[BluetoothClientManager getClient] connect:self.currentModel.address options:options onConnectedStateChange:^(TPConnectState state) {
+        self.conn = NO;
         switch (state) {
-            default:
-            case 0://断开连接
+            default://断开连接
                 weakSelf.connectedModel = nil;
                 weakSelf.connectedLabel.text = [NSString stringWithFormat:@"断开连接"];
                 return;
-            case 1://连接成功
+            case TP_CODE_CONNECT://连接成功
                 weakSelf.connectedModel = weakSelf.currentModel;
                 weakSelf.connectedLabel.text = [NSString stringWithFormat:@"连接成功：%@", weakSelf.currentModel.name];
                 break;
-            case -1://连接失败
-                weakSelf.connectedModel = nil;
-                weakSelf.connectedLabel.text = [NSString stringWithFormat:@"连接失败"];
-                break;
         }
-        
-        weakSelf.currentModel = nil;
+//        weakSelf.currentModel = nil;
         [tableView beginUpdates];
         [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
         [tableView endUpdates];
-        
-    } onServiceDiscover:^{
-        
-    } onCharacteristicChange:^(NSString * _Nonnull serviceUUID, NSString * _Nonnull characterUUID, NSData * _Nonnull value) {
-        
-    } onCharacteristicWrite:^(NSString * _Nonnull serviceUUID, NSString * _Nonnull characterUUID, NSData * _Nonnull value) {
-        
-    } onCharacteristicRead:^(NSString * _Nonnull serviceUUID, NSString * _Nonnull characterUUID, NSData * _Nonnull value) {
-        
+    } onReadChanged:^(NSString * _Nonnull uuid, NSInteger status, NSString * _Nonnull value) {
+        NSLog(@"读取特征值 : %@", value);
+    } onWriteChanged:^(NSString * _Nonnull uuid, NSInteger status, NSString * _Nonnull value) {
+//        NSLog(@"写数据 : %@", value);
+    } onReceivedChanged:^(NSString * _Nonnull uuid, NSArray * _Nonnull values) {
+        NSDictionary *data = @{
+                              @"imei": @"867726036503458",
+                              @"commandId": self.commandId,
+                              @"content": values
+                              };
+       [Cloud response:data block:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
+           [ProgressHUB toast:@"发送完成"];
+       }];
     }];
-    
+
 }
 
 
