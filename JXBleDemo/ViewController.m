@@ -6,7 +6,7 @@
 //  Copyright © 2019 JX. All rights reserved.
 //
 
-#import "TechphantBleLibrary.h"
+#import <TechphantBleLibrary/TechphantBleLibrary.h>
 #import "ViewController.h"
 #import "Tools.h"
 #import "ProgressHUB+Utils.h"
