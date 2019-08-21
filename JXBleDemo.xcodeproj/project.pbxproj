@@ -21,7 +21,6 @@
 		77F436CD2307C62F0014812A /* HttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436C62307C62F0014812A /* HttpRequest.m */; };
 		77F436CE2307C62F0014812A /* Http.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436C92307C62F0014812A /* Http.m */; };
 		77F436CF2307C62F0014812A /* Cloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436CB2307C62F0014812A /* Cloud.m */; };
-		77F436D22307C6A90014812A /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436D02307C6A90014812A /* Tools.m */; };
 		77F436DD2307C6E40014812A /* ProgressHUB+Tips.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436D52307C6E40014812A /* ProgressHUB+Tips.m */; };
 		77F436DE2307C6E40014812A /* ProgressHUB.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436D62307C6E40014812A /* ProgressHUB.m */; };
 		77F436DF2307C6E40014812A /* ProgressHUB+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 77F436D82307C6E40014812A /* ProgressHUB+Utils.m */; };
@@ -52,8 +51,6 @@
 		77F436C92307C62F0014812A /* Http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Http.m; sourceTree = "<group>"; };
 		77F436CA2307C62F0014812A /* HttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequest.h; sourceTree = "<group>"; };
 		77F436CB2307C62F0014812A /* Cloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cloud.m; sourceTree = "<group>"; };
-		77F436D02307C6A90014812A /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
-		77F436D12307C6A90014812A /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		77F436D42307C6E40014812A /* ProgressHUB+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ProgressHUB+Utils.h"; sourceTree = "<group>"; };
 		77F436D52307C6E40014812A /* ProgressHUB+Tips.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ProgressHUB+Tips.m"; sourceTree = "<group>"; };
 		77F436D62307C6E40014812A /* ProgressHUB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUB.m; sourceTree = "<group>"; };
@@ -117,8 +114,6 @@
 			children = (
 				77F436C72307C62F0014812A /* Cloud.h */,
 				77F436CB2307C62F0014812A /* Cloud.m */,
-				77F436D12307C6A90014812A /* Tools.h */,
-				77F436D02307C6A90014812A /* Tools.m */,
 				77F436C42307C62F0014812A /* Http.h */,
 				77F436C92307C62F0014812A /* Http.m */,
 				77F436C52307C62F0014812A /* HttpResponse.m */,
@@ -241,7 +236,6 @@
 				77F436CE2307C62F0014812A /* Http.m in Sources */,
 				77F436DD2307C6E40014812A /* ProgressHUB+Tips.m in Sources */,
 				77F436E02307C6E40014812A /* MBProgressHUD.m in Sources */,
-				77F436D22307C6A90014812A /* Tools.m in Sources */,
 				77F436922307C4DF0014812A /* main.m in Sources */,
 				77F436CF2307C62F0014812A /* Cloud.m in Sources */,
 				77F436DE2307C6E40014812A /* ProgressHUB.m in Sources */,
