@@ -42,6 +42,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    NSString *hex = @"ff0ff0ff0";
+//    NSData *data = [StringUtils hexStringToBytes:hex];
+//    NSString *hex2 = [StringUtils Char2Hex:data];
+    
     self.bleTableView.dataSource = self;
     self.bleTableView.delegate = self;
     self.modelArray = [NSMutableArray new];
@@ -126,28 +130,28 @@
 - (IBAction)sendVerifyCode:(id)sender {
     NSLog(@"sendVerifyCode");
     if (self.connectedModel) {
-//        [Cloud deviceBinding:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
-//            if (err) {
-//                [ProgressHUB toast:[NSString stringWithFormat:@"获取配置失败：%@", err.domain]];
-//                return;
-//            }
-//            self.commandId = data[@"commandId"];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//
-//                NSArray *values = data[@"sendCommand"];
-//                NSMutableArray *commands = [NSMutableArray new];
-//                for (int i=0; i < [values count]; i++) {
-//                    int index = i + 1;
-//                    NSDictionary *value = values[i];
-//                    NSString *key = [NSString stringWithFormat:@"key_%d",index];
-//                    NSString *command = value[key];
-//                    [commands addObject:command];
-//                }
-//                [[BluetoothClientManager getClient] send:self.connectedModel.address command:commands];
-//            });
-//        }];
+        [Cloud deviceBinding:^(NSDictionary * _Nonnull data, NSError * _Nonnull err) {
+            if (err) {
+                [ProgressHUB toast:[NSString stringWithFormat:@"获取配置失败：%@", err.domain]];
+                return;
+            }
+            self.commandId = data[@"commandId"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+                NSArray *values = data[@"sendCommand"];
+                NSMutableArray *commands = [NSMutableArray new];
+                for (int i=0; i < [values count]; i++) {
+                    int index = i + 1;
+                    NSDictionary *value = values[i];
+                    NSString *key = [NSString stringWithFormat:@"key_%d",index];
+                    NSString *command = value[key];
+                    [commands addObject:command];
+                }
+                [[BluetoothClientManager getClient] send:self.connectedModel.address command:commands];
+            });
+        }];
         
-        [[BluetoothClientManager getClient] readCharacterInfo:UUID_DEVICES_BLE_VERSION_CODE];
+//        [[BluetoothClientManager getClient] readCharacterInfo:UUID_DEVICES_BLE_VERSION_CODE];
     } else {
         [ProgressHUB toast:@"蓝牙未连接"];
     }
