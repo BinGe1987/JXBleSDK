@@ -68,6 +68,42 @@
     [self.ble setOnBleStateChangeListener:^(BOOL isBleOpen) {
         weakSelf.bleStatus.text = [NSString stringWithFormat:@"状态:%@", isBleOpen? @"开":@"关"];
     }];
+    
+//    [self autoConnect];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if ([Cloud isLogin]) {
+        [self autoConnect];
+    }
+}
+
+- (void)autoConnect {
+//    [[NSUserDefaults standardUserDefaults] setObject:@"1123" forKey:@"last_connected"];
+    
+    NSString *mac = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_connected"];
+    if (mac && [mac length] > 0) {
+        __weak typeof(self) weakSelf = self;
+        BTConnectOptions *options = [[BTConnectOptions alloc] initWithConnectRetry:3 connectTimeout:5000];
+        [[BluetoothClientManager getClient] connect:mac options:options onConnectedStateChange:^(NSInteger state) {
+            weakSelf.conn = NO;
+            weakSelf.connectedModel = [ScanResultModel new];
+            weakSelf.connectedModel.address = mac;
+            if (state == TP_CODE_CONNECT) {
+                weakSelf.connectedLabel.text = [NSString stringWithFormat:@"连接成功：%@", mac];
+            } else {
+                weakSelf.connectedLabel.text = [NSString stringWithFormat:@"断开连接"];
+                return;
+            }
+        } onReadChanged:^(NSString * _Nonnull uuid, NSInteger status, NSString * _Nonnull value) {
+            NSLog(@"读取特征值 : %@", value);
+        } onWriteChanged:^(NSString * _Nonnull uuid, NSInteger status, NSString * _Nonnull value) {
+            NSLog(@"写数据 : %@", value);
+        } onReceivedChanged:^(NSString * _Nonnull uuid, NSArray * _Nonnull values) {
+            
+        }];
+    }
 }
 
 
@@ -125,7 +161,7 @@
 
 
 /**
- 下发验证k码
+ 下发验证码
  */
 - (IBAction)sendVerifyCode:(id)sender {
     NSLog(@"sendVerifyCode");
@@ -209,8 +245,13 @@
     
     __weak typeof(self) weakSelf = self;
     BTConnectOptions *options = [[BTConnectOptions alloc] initWithConnectRetry:3 connectTimeout:5000];
+    NSString *mac = self.currentModel.address;
+    NSLog(@"mac : %@", mac);
     [[BluetoothClientManager getClient] connect:self.currentModel.address options:options onConnectedStateChange:^(NSInteger state) {
         self.conn = NO;
+        if (mac) {
+            [[NSUserDefaults standardUserDefaults] setObject:mac forKey:@"last_connected"];
+        }
         if (state == TP_CODE_CONNECT) {
             weakSelf.connectedModel = weakSelf.currentModel;
             weakSelf.connectedLabel.text = [NSString stringWithFormat:@"连接成功：%@", weakSelf.currentModel.name];
@@ -234,6 +275,8 @@
        }];
     }];
 
+    
+    
 }
 
 
