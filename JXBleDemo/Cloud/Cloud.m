@@ -19,7 +19,7 @@ static NSString *token;
 
 + (void)login:(void (^)(NSError *err))block {
     HttpRequest *request = [[HttpRequest alloc] initWithHost:@"http://dev.techphant.net/webApi/v2.0.0" api:@"/application/login"];
-    request.data = @{@"appId":@"tp_8tibgq1RWzd4",@"appSecret":@"ucV3lh0fLZkRb4Iy8z1CTwnMtB5PAevU"};
+    request.data = @{@"appId":@"tp_1Ydu4XS2RKFq",@"appSecret":@"DO9RMaVNpwYQCgItzHWX0jBTZu7S3src"};
     [Http post:request reponse:^(HttpResponse * _Nonnull response) {
         if (response.error) {
             block(response.error);

@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import <TechphantBleLibrary/TechphantBleLibrary.h>
+#import "ProgressHUB+Utils.h"
+
 @interface AppDelegate ()
 
 @end
